@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{usuario.listado}]]</h3>
+    <div th:if="${usuarios.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${usuarios.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{usuario.nombre}]]</th>
+                <th>[[#{usuario.correo}]]</th>
+                <th>[[#{usuario.rol}]]</th>
+                <th>[[#{usuario.empresa}]]</th>
+                <th>[[#{usuario.activo}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td>[[${usuario.nombre}]]</td>
+                <td>[[${usuario.correo}]]</td>
+                <td>[[${usuario.rol}]]</td>
+                <td>[[${usuario.empresa?.nombre}]]</td>
+                <td>[[${usuario.activo}]]</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{sala.listado}]]</h3>
+    <div th:if="${salas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${salas.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{sala.nombre}]]</th>
+                <th>[[#{sala.filas}]]</th>
+                <th>[[#{sala.asientosPorFila}]]</th>
+                <th>[[#{sala.empresa}]]</th>
+                <th>[[#{sala.activo}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="sala : ${salas}">
+                <td>[[${sala.nombre}]]</td>
+                <td>[[${sala.filas}]]</td>
+                <td>[[${sala.asientosPorFila}]]</td>
+                <td>[[${sala.empresa?.nombre}]]</td>
+                <td>[[${sala.activo}]]</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

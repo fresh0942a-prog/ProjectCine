@@ -1,0 +1,51 @@
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{empresa.listado}]]</h3>
+    <a th:href="@{/empresa/nuevo}" class="btn btn-primary mb-3">[[#{accion.agregar}]]</a>
+    <div th:if="${empresas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${empresas.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{empresa.nombre}]]</th>
+                <th>[[#{empresa.identificador}]]</th>
+                <th>[[#{empresa.ubicacion}]]</th>
+                <th>[[#{empresa.activo}]]</th>
+                <th>[[#{general.acciones}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="empresa : ${empresas}">
+                <td>[[${empresa.nombre}]]</td>
+                <td>[[${empresa.identificador}]]</td>
+                <td>[[${empresa.ubicacion}]]</td>
+                <td th:text="${empresa.activo} ? #{general.si} : #{general.no}"></td>
+                <td><a th:href="@{/empresa/modificar/{id}(id=${empresa.idEmpresa})}" class="btn btn-warning btn-sm">[[#{accion.editar}]]</a></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section th:fragment="formulario" class="container mt-3">
+    <h3 th:text="${empresa.idEmpresa == null} ? #{empresa.agregar} : #{empresa.editar}"></h3>
+    <div th:if="${errorIdentificador}" class="alert alert-danger">[[#{empresa.errorIdentificador}]]</div>
+    <form th:action="@{/empresa/guardar}" th:object="${empresa}" method="post">
+        <input type="hidden" th:field="*{idEmpresa}"/>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">[[#{empresa.nombre}]]</label>
+            <input type="text" th:field="*{nombre}" class="form-control" maxlength="100" required/>
+        </div>
+        <div class="mb-3">
+            <label for="identificador" class="form-label">[[#{empresa.identificador}]]</label>
+            <input type="text" th:field="*{identificador}" class="form-control" maxlength="50" required/>
+        </div>
+        <div class="mb-3">
+            <label for="ubicacion" class="form-label">[[#{empresa.ubicacion}]]</label>
+            <input type="text" th:field="*{ubicacion}" class="form-control" maxlength="100"/>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" th:field="*{activo}" class="form-check-input"/>
+            <label th:for="${#ids.prev('activo')}" class="form-check-label">[[#{empresa.activo}]]</label>
+        </div>
+        <button type="submit" class="btn btn-success">[[#{accion.guardar}]]</button>
+        <a th:href="@{/empresa/listado}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+    </form>
+</section>

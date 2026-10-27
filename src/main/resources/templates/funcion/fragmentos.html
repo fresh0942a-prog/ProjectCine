@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{funcion.listado}]]</h3>
+    <div th:if="${funciones.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${funciones.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{funcion.pelicula}]]</th>
+                <th>[[#{funcion.sala}]]</th>
+                <th>[[#{funcion.empresa}]]</th>
+                <th>[[#{funcion.fechaHora}]]</th>
+                <th>[[#{funcion.precio}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="funcion : ${funciones}">
+                <td>[[${funcion.pelicula.titulo}]]</td>
+                <td>[[${funcion.sala.nombre}]]</td>
+                <td>[[${funcion.sala.empresa?.nombre}]]</td>
+                <td>[[${#temporals.format(funcion.fechaHora, 'dd/MM/yyyy HH:mm')}]]</td>
+                <td>[[${#numbers.formatDecimal(funcion.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

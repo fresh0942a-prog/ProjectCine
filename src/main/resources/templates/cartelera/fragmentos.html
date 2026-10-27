@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{plantilla.cartelera}]]</h3>
+    <div th:if="${peliculas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${peliculas.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{pelicula.titulo}]]</th>
+                <th>[[#{pelicula.clasificacion}]]</th>
+                <th>[[#{pelicula.duracion}]]</th>
+                <th>[[#{pelicula.sinopsis}]]</th>
+                <th>[[#{pelicula.empresa}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pelicula : ${peliculas}">
+                <td>[[${pelicula.titulo}]]</td>
+                <td>[[${pelicula.clasificacion}]]</td>
+                <td>[[${pelicula.duracion}]]</td>
+                <td>[[${pelicula.sinopsis}]]</td>
+                <td>[[${pelicula.empresa?.nombre}]]</td>
+            </tr>
+        </tbody>
+    </table>
+</section>

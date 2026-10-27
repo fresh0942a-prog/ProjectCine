@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+
+<section th:fragment="listado" class="container mt-3">
+    <h3>[[#{snack.listado}]]</h3>
+    <div th:if="${snacks.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${snacks.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{snack.nombre}]]</th>
+                <th>[[#{snack.precio}]]</th>
+                <th>[[#{snack.empresa}]]</th>
+                <th>[[#{snack.activo}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="snack : ${snacks}">
+                <td>[[${snack.nombre}]]</td>
+                <td>[[${#numbers.formatDecimal(snack.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
+                <td>[[${snack.empresa?.nombre}]]</td>
+                <td>[[${snack.activo}]]</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
