@@ -32,14 +32,17 @@
         <div class="mb-3">
             <label for="nombre" class="form-label">[[#{empresa.nombre}]]</label>
             <input type="text" th:field="*{nombre}" class="form-control" maxlength="100" required/>
+            <div th:errors="*{nombre}" class="text-danger"></div>
         </div>
         <div class="mb-3">
             <label for="identificador" class="form-label">[[#{empresa.identificador}]]</label>
             <input type="text" th:field="*{identificador}" class="form-control" maxlength="50" required/>
+            <div th:errors="*{identificador}" class="text-danger"></div>
         </div>
         <div class="mb-3">
             <label for="ubicacion" class="form-label">[[#{empresa.ubicacion}]]</label>
             <input type="text" th:field="*{ubicacion}" class="form-control" maxlength="100"/>
+            <div th:errors="*{ubicacion}" class="text-danger"></div>
         </div>
         <div class="form-check mb-3">
             <input type="checkbox" th:field="*{activo}" class="form-check-input"/>
