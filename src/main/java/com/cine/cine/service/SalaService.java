@@ -5,6 +5,7 @@
 package com.cine.cine.service;
 
 import com.cine.cine.domain.Sala;
+import com.cine.cine.repository.FuncionRepository;
 import com.cine.cine.repository.SalaRepository;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class SalaService {
 
     private final SalaRepository salaRepository;
+    private final FuncionRepository funcionRepository;
 
-    public SalaService(SalaRepository salaRepository) {
+    public SalaService(SalaRepository salaRepository, FuncionRepository funcionRepository) {
         this.salaRepository = salaRepository;
+        this.funcionRepository = funcionRepository;
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +42,12 @@ public class SalaService {
     }
 
     @Transactional
-    public void delete(Integer idSala) {
+    public boolean delete(Integer idSala) {
+        if (funcionRepository.existsBySala_IdSala(idSala)) {
+            return false;
+        }
         salaRepository.deleteById(idSala);
+        return true;
     }
 }
+

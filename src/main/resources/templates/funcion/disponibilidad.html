@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <main class="container mt-3">
+            <h3>[[#{funcion.disponibilidad}]]</h3>
+            <div class="card"><div class="card-body">
+                <h5 class="card-title" th:text="${funcion.pelicula.titulo}"></h5>
+                <p><strong>[[#{funcion.sala}]]:</strong> [[${funcion.sala.nombre}]]</p>
+                <p><strong>[[#{funcion.fechaHora}]]:</strong> [[${#temporals.format(funcion.fechaHora, 'dd/MM/yyyy HH:mm')}]]</p>
+                <p><strong>[[#{sala.capacidad}]]:</strong> [[${capacidad}]]</p>
+                <p><strong>[[#{funcion.ocupados}]]:</strong> [[${ocupados}]]</p>
+                <p><strong>[[#{funcion.disponiblesAsientos}]]:</strong> [[${disponibles}]]</p>
+                <div th:if="${pasada}" class="alert alert-secondary">[[#{funcion.pasada}]]</div>
+                <div th:if="${agotada}" class="alert alert-warning">[[#{funcion.agotada}]]</div>
+                <div th:if="${!pasada and !agotada}" class="alert alert-success">[[#{funcion.disponible}]]</div>
+                <a th:href="@{/funcion/listado}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+            </div></div>
+        </main>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
