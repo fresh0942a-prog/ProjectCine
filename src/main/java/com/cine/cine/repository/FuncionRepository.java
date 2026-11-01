@@ -17,4 +17,8 @@ public interface FuncionRepository extends JpaRepository<Funcion, Integer> {
     public List<Funcion> findByPeliculaAndFechaHoraAfterOrderByFechaHora(Pelicula pelicula, LocalDateTime fecha);
 
     public boolean existsBySalaAndFechaHora(Sala sala, LocalDateTime fechaHora);
+
+    public List<Funcion> findBySala(Sala sala);
+
+    public boolean existsBySala_IdSala(Integer idSala);
 }

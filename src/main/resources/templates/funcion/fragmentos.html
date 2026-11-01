@@ -6,25 +6,58 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 <section th:fragment="listado" class="container mt-3">
     <h3>[[#{funcion.listado}]]</h3>
+    <a th:href="@{/funcion/nuevo}" class="btn btn-primary mb-3">[[#{accion.agregar}]]</a>
+    <div th:if="${mensajeError}" class="alert alert-danger">[[${mensajeError}]]</div>
     <div th:if="${funciones.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
     <table th:unless="${funciones.empty}" class="table table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>[[#{funcion.pelicula}]]</th>
-                <th>[[#{funcion.sala}]]</th>
-                <th>[[#{funcion.empresa}]]</th>
-                <th>[[#{funcion.fechaHora}]]</th>
-                <th>[[#{funcion.precio}]]</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="funcion : ${funciones}">
-                <td>[[${funcion.pelicula.titulo}]]</td>
-                <td>[[${funcion.sala.nombre}]]</td>
-                <td>[[${funcion.sala.empresa?.nombre}]]</td>
-                <td>[[${#temporals.format(funcion.fechaHora, 'dd/MM/yyyy HH:mm')}]]</td>
-                <td>[[${#numbers.formatDecimal(funcion.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
-            </tr>
-        </tbody>
+        <thead class="table-dark"><tr>
+            <th>[[#{funcion.pelicula}]]</th><th>[[#{funcion.sala}]]</th><th>[[#{funcion.empresa}]]</th>
+            <th>[[#{funcion.fechaHora}]]</th><th>[[#{funcion.precio}]]</th><th>[[#{general.acciones}]]</th>
+        </tr></thead>
+        <tbody><tr th:each="funcion : ${funciones}">
+            <td>[[${funcion.pelicula.titulo}]]</td><td>[[${funcion.sala.nombre}]]</td><td>[[${funcion.sala.empresa?.nombre}]]</td>
+            <td>[[${#temporals.format(funcion.fechaHora, 'dd/MM/yyyy HH:mm')}]]</td>
+            <td>[[${#numbers.formatDecimal(funcion.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
+            <td>
+                <a th:href="@{/funcion/modificar/{id}(id=${funcion.idFuncion})}" class="btn btn-warning btn-sm">[[#{accion.editar}]]</a>
+                <a th:href="@{/funcion/disponibilidad/{id}(id=${funcion.idFuncion})}" class="btn btn-info btn-sm">[[#{funcion.disponibilidad}]]</a>
+            </td>
+        </tr></tbody>
     </table>
+</section>
+
+<section th:fragment="formulario" class="container mt-3">
+    <h3 th:text="${funcion.idFuncion == null} ? #{funcion.agregar} : #{funcion.editar}"></h3>
+    <div th:if="${errorHorario}" class="alert alert-danger">[[${errorHorario}]]</div>
+    <form th:action="@{/funcion/guardar}" th:object="${funcion}" method="post">
+        <input type="hidden" th:field="*{idFuncion}"/>
+        <div class="mb-3">
+            <label for="pelicula" class="form-label">[[#{funcion.pelicula}]]</label>
+            <select id="pelicula" name="pelicula.idPelicula" class="form-select" required>
+                <option value="">Seleccione una película</option>
+                <option th:each="pelicula : ${peliculas}" th:value="${pelicula.idPelicula}" th:text="${pelicula.titulo}" th:selected="${funcion.pelicula != null and funcion.pelicula.idPelicula == pelicula.idPelicula}"></option>
+            </select>
+            <div th:errors="*{pelicula}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="sala" class="form-label">[[#{funcion.sala}]]</label>
+            <select id="sala" name="sala.idSala" class="form-select" required>
+                <option value="">Seleccione una sala</option>
+                <option th:each="sala : ${salas}" th:value="${sala.idSala}" th:text="${sala.empresa.nombre + ' - ' + sala.nombre}" th:selected="${funcion.sala != null and funcion.sala.idSala == sala.idSala}"></option>
+            </select>
+            <div th:errors="*{sala}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="fechaHora" class="form-label">[[#{funcion.fechaHora}]]</label>
+            <input type="datetime-local" th:field="*{fechaHora}" class="form-control" required/>
+            <div th:errors="*{fechaHora}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">[[#{funcion.precio}]]</label>
+            <input type="number" th:field="*{precio}" class="form-control" min="0.01" step="0.01" required/>
+            <div th:errors="*{precio}" class="text-danger"></div>
+        </div>
+        <button type="submit" class="btn btn-success">[[#{accion.guardar}]]</button>
+        <a th:href="@{/funcion/listado}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+    </form>
 </section>
