@@ -2,7 +2,7 @@
 
 
 <section th:fragment="listado" class="container mt-3">
-    <h3>[[#{plantilla.cartelera}]]</h3>
+    <h3>[[#{plantilla.cartelera}]] - [[${empresa.nombre}]]</h3>
     <div th:if="${peliculas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
     <table th:unless="${peliculas.empty}" class="table table-striped">
         <thead class="table-dark">
@@ -11,7 +11,7 @@
                 <th>[[#{pelicula.clasificacion}]]</th>
                 <th>[[#{pelicula.duracion}]]</th>
                 <th>[[#{pelicula.sinopsis}]]</th>
-                <th>[[#{pelicula.empresa}]]</th>
+                <th>[[#{general.acciones}]]</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +20,47 @@
                 <td>[[${pelicula.clasificacion}]]</td>
                 <td>[[${pelicula.duracion}]]</td>
                 <td>[[${pelicula.sinopsis}]]</td>
-                <td>[[${pelicula.empresa?.nombre}]]</td>
+                <td><a th:href="@{/cartelera/detalle/{id}(id=${pelicula.idPelicula})}" class="btn btn-primary btn-sm">[[#{pelicula.detalle}]]</a></td>
             </tr>
         </tbody>
     </table>
+</section>
+
+<section th:fragment="detalle" class="container mt-3">
+    <div class="row">
+        <div class="col-md-4 mb-3" th:if="${pelicula.rutaImagen != null}">
+            <img th:src="${pelicula.rutaImagen}" th:alt="${pelicula.titulo}" class="img-fluid rounded"/>
+        </div>
+        <div class="col-md-8 mb-3">
+            <h3>[[${pelicula.titulo}]]</h3>
+            <p>[[${pelicula.sinopsis}]]</p>
+            <p class="mb-1"><strong>[[#{pelicula.duracion}]]:</strong> [[${pelicula.duracion}]]</p>
+            <p class="mb-1"><strong>[[#{pelicula.clasificacion}]]:</strong> [[${pelicula.clasificacion}]]</p>
+            <p class="mb-1"><strong>[[#{pelicula.genero}]]:</strong> [[${pelicula.genero}]]</p>
+        </div>
+    </div>
+    <h4>[[#{funcion.disponibles}]]</h4>
+    <div th:if="${funciones.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+    <table th:unless="${funciones.empty}" class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>[[#{funcion.fechaHora}]]</th>
+                <th>[[#{funcion.sala}]]</th>
+                <th>[[#{funcion.precio}]]</th>
+                <th>[[#{general.acciones}]]</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="funcion : ${funciones}" th:classappend="${funcion.idFuncion == idFuncion} ? 'table-success'">
+                <td>[[${#temporals.format(funcion.fechaHora, 'dd/MM/yyyy HH:mm')}]]</td>
+                <td>[[${funcion.sala.nombre}]]</td>
+                <td>[[${#numbers.formatDecimal(funcion.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
+                <td>
+                    <span th:if="${funcion.idFuncion == idFuncion}" class="badge text-bg-success">[[#{funcion.seleccionada}]]</span>
+                    <a th:unless="${funcion.idFuncion == idFuncion}" th:href="@{/cartelera/detalle/{id}(id=${pelicula.idPelicula},idFuncion=${funcion.idFuncion})}" class="btn btn-primary btn-sm">[[#{funcion.seleccionar}]]</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/cartelera/{identificador}(identificador=${pelicula.empresa.identificador})}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
 </section>

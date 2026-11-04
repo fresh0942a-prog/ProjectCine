@@ -1,5 +1,6 @@
 package com.cine.cine.service;
 
+import com.cine.cine.domain.Empresa;
 import com.cine.cine.domain.Pelicula;
 import com.cine.cine.repository.PeliculaRepository;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 /**
  *
- * @author barqu
+ * @author AlexanderParallelsVM
  */
 @Service
 public class PeliculaService {
@@ -29,6 +30,11 @@ public class PeliculaService {
             return peliculaRepository.findByActivoTrue();
         }
         return peliculaRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Pelicula> getPeliculasPorEmpresa(Empresa empresa) {
+        return peliculaRepository.findByEmpresaAndActivoTrue(empresa);
     }
 
     @Transactional(readOnly = true)

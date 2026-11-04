@@ -10,6 +10,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <div class="container mt-3">
             <h3>[[#{inicio.titulo}]]</h3>
             <p>[[#{inicio.subtitulo}]]</p>
+            <div th:if="${empresas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
+            <div class="row">
+                <div th:each="empresa : ${empresas}" class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">[[${empresa.nombre}]]</h5>
+                            <p class="card-text">[[${empresa.ubicacion}]]</p>
+                            <a th:href="@{/cartelera/{identificador}(identificador=${empresa.identificador})}" class="btn btn-primary">[[#{cartelera.ver}]]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer th:replace="~{general/fragmentos :: footer}"></footer>
     </body>

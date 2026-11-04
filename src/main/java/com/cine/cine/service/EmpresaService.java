@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
  *
- * @author barqu
+ * @author AlexanderParallelsVM
  */
 @Service
 public class EmpresaService {
@@ -33,6 +33,11 @@ public class EmpresaService {
     @Transactional(readOnly = true)
     public Optional<Empresa> getEmpresa(Integer idEmpresa) {
         return empresaRepository.findById(idEmpresa);
+    }
+
+    @Transactional(readOnly = true)
+    public Empresa getEmpresaPorIdentificador(String identificador) {
+        return empresaRepository.findByIdentificador(identificador);
     }
 
     @Transactional

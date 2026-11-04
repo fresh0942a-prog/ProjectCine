@@ -1,6 +1,7 @@
 package com.cine.cine.service;
 
 import com.cine.cine.domain.Funcion;
+import com.cine.cine.domain.Pelicula;
 import com.cine.cine.repository.FuncionRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,32 +24,17 @@ public class FuncionService {
     }
 
     @Transactional(readOnly = true)
+    public List<Funcion> getFuncionesDisponibles(Pelicula pelicula) {
+        return funcionRepository.findByPeliculaAndFechaHoraAfterOrderByFechaHora(pelicula, LocalDateTime.now());
+    }
+
+    @Transactional(readOnly = true)
     public Optional<Funcion> getFuncion(Integer idFuncion) {
         return funcionRepository.findById(idFuncion);
     }
 
     @Transactional
     public void save(Funcion funcion) {
-        if (funcion.getSala() == null || funcion.getPelicula() == null || funcion.getFechaHora() == null) {
-            throw new IllegalArgumentException("Debe seleccionar película, sala, fecha y hora.");
-        }
-        LocalDateTime inicio = funcion.getFechaHora();
-        LocalDateTime fin = inicio.plusMinutes(funcion.getPelicula().getDuracion() == null ? 0 : funcion.getPelicula().getDuracion());
-        List<Funcion> funcionesSala = funcionRepository.findBySala(funcion.getSala());
-        for (Funcion existente : funcionesSala) {
-            if (funcion.getIdFuncion() != null && funcion.getIdFuncion().equals(existente.getIdFuncion())) {
-                continue;
-            }
-            if (existente.getFechaHora() == null || existente.getPelicula() == null) {
-                continue;
-            }
-            int duracionExistente = existente.getPelicula().getDuracion() == null ? 0 : existente.getPelicula().getDuracion();
-            LocalDateTime inicioExistente = existente.getFechaHora();
-            LocalDateTime finExistente = inicioExistente.plusMinutes(duracionExistente);
-            if (inicio.isBefore(finExistente) && fin.isAfter(inicioExistente)) {
-                throw new IllegalArgumentException("La sala ya tiene una función en un horario incompatible.");
-            }
-        }
         funcionRepository.save(funcion);
     }
 
