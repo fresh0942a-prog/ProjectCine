@@ -2,6 +2,7 @@
 
 <section th:fragment="listado" class="container mt-3">
     <h3>[[#{pelicula.listado}]]</h3>
+    <a th:href="@{/pelicula/nuevo}" class="btn btn-primary mb-3">[[#{accion.agregar}]]</a>
     <div th:if="${peliculas.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
     <table th:unless="${peliculas.empty}" class="table table-striped">
         <thead class="table-dark">
@@ -12,6 +13,7 @@
                 <th>[[#{pelicula.duracion}]]</th>
                 <th>[[#{pelicula.empresa}]]</th>
                 <th>[[#{pelicula.activo}]]</th>
+                <th>[[#{general.acciones}]]</th>
             </tr>
         </thead>
         <tbody>
@@ -21,8 +23,62 @@
                 <td>[[${pelicula.clasificacion}]]</td>
                 <td>[[${pelicula.duracion}]]</td>
                 <td>[[${pelicula.empresa?.nombre}]]</td>
-                <td>[[${pelicula.activo}]]</td>
+                <td th:text="${pelicula.activo} ? #{general.si} : #{general.no}"></td>
+                <td><a th:href="@{/pelicula/modificar/{id}(id=${pelicula.idPelicula})}" class="btn btn-warning btn-sm">[[#{accion.editar}]]</a></td>
             </tr>
         </tbody>
     </table>
+</section>
+
+<section th:fragment="formulario" class="container mt-3">
+    <h3 th:text="${pelicula.idPelicula == null} ? #{pelicula.agregar} : #{pelicula.editar}"></h3>
+    <div th:if="${errorEmpresa}" class="alert alert-danger">[[#{pelicula.errorEmpresa}]]</div>
+    <div th:if="${errorImagen}" class="alert alert-danger">[[#{pelicula.errorImagen}]]</div>
+    <form th:action="@{/pelicula/guardar}" th:object="${pelicula}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{idPelicula}"/>
+        <input type="hidden" th:field="*{rutaImagen}"/>
+        <div class="mb-3">
+            <label for="titulo" class="form-label">[[#{pelicula.titulo}]]</label>
+            <input type="text" th:field="*{titulo}" class="form-control" maxlength="100" required/>
+            <div th:errors="*{titulo}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="sinopsis" class="form-label">[[#{pelicula.sinopsis}]]</label>
+            <textarea th:field="*{sinopsis}" class="form-control" rows="3" required></textarea>
+            <div th:errors="*{sinopsis}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="genero" class="form-label">[[#{pelicula.genero}]]</label>
+            <input type="text" th:field="*{genero}" class="form-control" maxlength="30" required/>
+            <div th:errors="*{genero}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="clasificacion" class="form-label">[[#{pelicula.clasificacion}]]</label>
+            <input type="text" th:field="*{clasificacion}" class="form-control" maxlength="10" required/>
+            <div th:errors="*{clasificacion}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="duracion" class="form-label">[[#{pelicula.duracion}]]</label>
+            <input type="number" th:field="*{duracion}" class="form-control" min="1" step="1" required/>
+            <div th:errors="*{duracion}" class="text-danger"></div>
+        </div>
+        <div class="mb-3">
+            <label for="peliculaEmpresa" class="form-label">[[#{pelicula.empresa}]]</label>
+            <select id="peliculaEmpresa" name="empresa.idEmpresa" class="form-select" required>
+                <option th:each="e : ${empresas}" th:value="${e.idEmpresa}"
+                        th:selected="${pelicula.empresa != null and e.idEmpresa == pelicula.empresa.idEmpresa}">[[${e.nombre}]]</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="peliculaImagenFile" class="form-label">[[#{pelicula.imagen}]]</label>
+            <input type="file" id="peliculaImagenFile" name="imagenFile" class="form-control"/>
+            <img th:if="${pelicula.rutaImagen != null and !pelicula.rutaImagen.empty}" th:src="${pelicula.rutaImagen}" th:alt="${pelicula.titulo}" class="mt-2 rounded" height="200"/>
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" th:field="*{activo}" class="form-check-input"/>
+            <label th:for="${#ids.prev('activo')}" class="form-check-label">[[#{pelicula.activo}]]</label>
+        </div>
+        <button type="submit" class="btn btn-success">[[#{accion.guardar}]]</button>
+        <a th:href="@{/pelicula/listado}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+    </form>
 </section>
