@@ -57,7 +57,8 @@
                 <td>[[${#numbers.formatDecimal(funcion.precio, 1, 'COMMA', 2, 'POINT')}]]</td>
                 <td>
                     <span th:if="${funcion.idFuncion == idFuncion}" class="badge text-bg-success">[[#{funcion.seleccionada}]]</span>
-                    <a th:unless="${funcion.idFuncion == idFuncion}" th:href="@{/cartelera/detalle/{id}(id=${pelicula.idPelicula},idFuncion=${funcion.idFuncion})}" class="btn btn-primary btn-sm">[[#{funcion.seleccionar}]]</a>
+                    <a th:unless="${funcion.idFuncion == idFuncion}" th:href="@{/cartelera/detalle/{id}(id=${pelicula.idPelicula},
+                    idFuncion=${funcion.idFuncion})}" class="btn btn-primary btn-sm">[[#{funcion.seleccionar}]]</a>
                 </td>
             </tr>
         </tbody>

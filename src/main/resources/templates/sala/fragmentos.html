@@ -19,7 +19,8 @@
                 <td th:text="${sala.activo} ? #{general.si} : #{general.no}"></td>
                 <td>
                     <a th:href="@{/sala/modificar/{id}(id=${sala.idSala})}" class="btn btn-warning btn-sm">[[#{accion.editar}]]</a>
-                    <a th:href="@{/sala/eliminar/{id}(id=${sala.idSala})}" class="btn btn-danger btn-sm" onclick="return confirm('¿Desea eliminar esta sala?')">[[#{accion.eliminar}]]</a>
+                    <a th:href="@{/sala/eliminar/{id}(id=${sala.idSala})}" class="btn btn-danger btn-sm" 
+                       onclick="return confirm('¿Desea eliminar esta sala?')">[[#{accion.eliminar}]]</a>
                 </td>
             </tr>
         </tbody>
@@ -49,7 +50,8 @@
             <label for="empresa" class="form-label">[[#{sala.empresa}]]</label>
             <select id="empresa" name="empresa.idEmpresa" class="form-select" required>
                 <option value="">Seleccione un cine</option>
-                <option th:each="empresa : ${empresas}" th:value="${empresa.idEmpresa}" th:text="${empresa.nombre}" th:selected="${sala.empresa != null and sala.empresa.idEmpresa == empresa.idEmpresa}"></option>
+                <option th:each="empresa : ${empresas}" th:value="${empresa.idEmpresa}" th:text="${empresa.nombre}" 
+                        th:selected="${sala.empresa != null and sala.empresa.idEmpresa == empresa.idEmpresa}"></option>
             </select>
             <div th:if="${errorEmpresa}" class="text-danger">[[#{sala.errorEmpresa}]]</div>
         </div>

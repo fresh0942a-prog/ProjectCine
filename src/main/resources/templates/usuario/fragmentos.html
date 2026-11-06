@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
 <section th:fragment="listado" class="container mt-3">
     <h3>[[#{usuario.listado}]]</h3>
+    <a th:href="@{/usuario/nuevo}" class="btn btn-primary mb-3">[[#{accion.agregar}]]</a>
     <div th:if="${usuarios.empty}" class="alert alert-info">[[#{listado.sinDatos}]]</div>
     <table th:unless="${usuarios.empty}" class="table table-striped">
         <thead class="table-dark">
@@ -14,15 +11,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 <th>[[#{usuario.rol}]]</th>
                 <th>[[#{usuario.empresa}]]</th>
                 <th>[[#{usuario.activo}]]</th>
+                <th>[[#{general.acciones}]]</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="usuario : ${usuarios}">
                 <td>[[${usuario.nombre}]]</td>
                 <td>[[${usuario.correo}]]</td>
-                <td>[[${usuario.rol}]]</td>
+                <td th:text="#{${'rol.' + usuario.rol}}"></td>
                 <td>[[${usuario.empresa?.nombre}]]</td>
-                <td>[[${usuario.activo}]]</td>
+                <td th:text="${usuario.activo} ? #{general.si} : #{general.no}"></td>
+                <td class="d-flex gap-1">
+                    <a th:href="@{/usuario/modificar/{id}(id=${usuario.idUsuario})}" class="btn btn-warning btn-sm">[[#{accion.editar}]]</a>
+                    <form th:action="@{/usuario/estado/{id}(id=${usuario.idUsuario})}" method="post">
+                        <button type="submit" class="btn btn-sm"
+                                th:classappend="${usuario.activo} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                th:text="${usuario.activo} ? #{usuario.desactivar} : #{usuario.activar}"></button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

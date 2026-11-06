@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <section class="container mt-3" style="max-width: 560px;">
+            <h3 th:text="${usuario.idUsuario == null} ? #{usuario.agregar} : #{usuario.editar}"></h3>
+            <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+            <form th:action="@{/usuario/guardar}" th:object="${usuario}" method="post">
+                <input type="hidden" th:field="*{idUsuario}"/>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">[[#{usuario.nombre}]]</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" maxlength="100"/>
+                    <div th:errors="*{nombre}" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label">[[#{usuario.correo}]]</label>
+                    <input type="text" th:field="*{correo}" class="form-control" maxlength="100"/>
+                    <div th:errors="*{correo}" class="text-danger"></div>
+                </div>
+                <div th:if="${usuario.idUsuario == null}" class="mb-3">
+                    <label for="contrasena" class="form-label">[[#{usuario.contrasena}]]</label>
+                    <input type="password" th:field="*{contrasena}" class="form-control" maxlength="64" autocomplete="new-password"/>
+                    <div th:errors="*{contrasena}" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="rol" class="form-label">[[#{usuario.rol}]]</label>
+                    <select th:field="*{rol}" class="form-select">
+                        <option th:each="r : ${roles}" th:value="${r}" th:text="#{${'rol.' + r}}"></option>
+                    </select>
+                </div>
+                <div th:if="${esAdminGeneral}" class="mb-3">
+                    <label for="empresa" class="form-label">[[#{usuario.empresa}]]</label>
+                    <select id="empresa" name="empresa.idEmpresa" class="form-select">
+                        <option value="">--</option>
+                        <option th:each="e : ${empresas}" th:value="${e.idEmpresa}" th:text="${e.nombre}"
+                                th:selected="${usuario.empresa != null and usuario.empresa.idEmpresa == e.idEmpresa}"></option>
+                    </select>
+                </div>
+                <div th:if="${usuario.idUsuario == null}" class="form-check mb-3">
+                    <input type="checkbox" th:field="*{activo}" class="form-check-input"/>
+                    <label th:for="${#ids.prev('activo')}" class="form-check-label">[[#{usuario.activo}]]</label>
+                </div>
+                <button type="submit" class="btn btn-success">[[#{accion.guardar}]]</button>
+                <a th:href="@{/usuario/listado}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+            </form>
+        </section>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

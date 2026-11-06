@@ -10,11 +10,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
-/**
- *
- * @author barqu
- */
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
 
@@ -30,6 +27,12 @@ public class ProjectConfig implements WebMvcConfigurer {
         var lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         registro.addInterceptor(lci);
+    }
+    
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("usuario/login");
+        registry.addViewController("/acceso-denegado").setViewName("general/acceso-denegado");
     }
 
     @Bean("messageSource")

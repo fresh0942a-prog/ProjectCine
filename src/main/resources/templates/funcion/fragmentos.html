@@ -35,7 +35,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <label for="pelicula" class="form-label">[[#{funcion.pelicula}]]</label>
             <select id="pelicula" name="pelicula.idPelicula" class="form-select" required>
                 <option value="">Seleccione una película</option>
-                <option th:each="pelicula : ${peliculas}" th:value="${pelicula.idPelicula}" th:text="${pelicula.titulo}" th:selected="${funcion.pelicula != null and funcion.pelicula.idPelicula == pelicula.idPelicula}"></option>
+                <option th:each="pelicula : ${peliculas}" th:value="${pelicula.idPelicula}" th:text="${pelicula.titulo}" 
+                    th:selected="${funcion.pelicula != null and funcion.pelicula.idPelicula == pelicula.idPelicula}"></option>
             </select>
             <div th:errors="*{pelicula}" class="text-danger"></div>
         </div>
@@ -43,7 +44,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <label for="sala" class="form-label">[[#{funcion.sala}]]</label>
             <select id="sala" name="sala.idSala" class="form-select" required>
                 <option value="">Seleccione una sala</option>
-                <option th:each="sala : ${salas}" th:value="${sala.idSala}" th:text="${sala.empresa.nombre + ' - ' + sala.nombre}" th:selected="${funcion.sala != null and funcion.sala.idSala == sala.idSala}"></option>
+                <option th:each="sala : ${salas}" th:value="${sala.idSala}" th:text="${sala.empresa.nombre + ' - ' + sala.nombre}" 
+                    th:selected="${funcion.sala != null and funcion.sala.idSala == sala.idSala}"></option>
             </select>
             <div th:errors="*{sala}" class="text-danger"></div>
         </div>

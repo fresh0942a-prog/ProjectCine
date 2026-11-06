@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <section class="container mt-3" style="max-width: 480px;">
+            <h3>[[#{plantilla.registrarse}]]</h3>
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">[[#{usuario.nombre}]]</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" maxlength="100"/>
+                    <div th:errors="*{nombre}" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label">[[#{usuario.correo}]]</label>
+                    <input type="text" th:field="*{correo}" class="form-control" maxlength="100"/>
+                    <div th:errors="*{correo}" class="text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="contrasena" class="form-label">[[#{usuario.contrasena}]]</label>
+                    <input type="password" th:field="*{contrasena}" class="form-control" maxlength="64"/>
+                    <div th:errors="*{contrasena}" class="text-danger"></div>
+                </div>
+                <button type="submit" class="btn btn-success">[[#{registro.crear}]]</button>
+                <a th:href="@{/}" class="btn btn-secondary">[[#{accion.regresar}]]</a>
+            </form>
+        </section>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

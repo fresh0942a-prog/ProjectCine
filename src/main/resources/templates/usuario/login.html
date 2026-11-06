@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header}"></header>
+        <section class="container mt-3" style="max-width: 480px;">
+            <h3>[[#{plantilla.iniciarSesion}]]</h3>
+            <div th:if="${param.error}" class="alert alert-danger">[[#{login.error}]]</div>
+            <div th:if="${param.logout}" class="alert alert-info">[[#{login.cerrada}]]</div>
+            <div th:if="${param.registrado}" class="alert alert-success">[[#{registro.exito}]]</div>
+            <form th:action="@{/login}" method="post">
+                <div class="mb-3">
+                    <label for="correo" class="form-label">[[#{usuario.correo}]]</label>
+                    <input type="text" id="correo" name="correo" class="form-control" maxlength="100" required/>
+                </div>
+                <div class="mb-3">
+                    <label for="contrasena" class="form-label">[[#{usuario.contrasena}]]</label>
+                    <input type="password" id="contrasena" name="contrasena" class="form-control" required/>
+                </div>
+                <button type="submit" class="btn btn-primary">[[#{plantilla.iniciarSesion}]]</button>
+                <a th:href="@{/registro}" class="btn btn-link">[[#{plantilla.registrarse}]]</a>
+            </form>
+        </section>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
